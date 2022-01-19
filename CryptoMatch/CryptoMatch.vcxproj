@@ -150,10 +150,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CryptoMatch.cpp" />
-    <ClCompile Include="order.cpp" />
+    <ClCompile Include="engine\order.cpp" />
+    <ClCompile Include="engine\order_book.cpp" />
+    <ClCompile Include="engine\trade.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="order.hpp" />
+    <ClInclude Include="engine\order.hpp" />
+    <ClInclude Include="engine\order_book.hpp" />
+    <ClInclude Include="engine\trade.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
