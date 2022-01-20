@@ -65,7 +65,50 @@ void OrderBook::RemoveSellOrder(int index)
 
 std::vector<Trade*> OrderBook::ProcessLimitBuy(Order* order)
 {
+	std::vector<Trade*> trades;
+	int n = m_sell_orders.size();
 
+	// Check for at least one matching order in the sell_orders list.
+	if ((n != 0) || (m_sell_orders[n - 1]->m_price <= order->m_price))
+	{
+		// traverse all orders that match
+		for (int i = n - 1; i >= 0; i--)
+		{
+			Order* sell_order = m_sell_orders[i];
+			if (sell_order->m_price > order->m_price) break;
+
+			// Fill the entire order
+			if (sell_order->m_amount >= order->m_amount)
+			{
+				// Add new trade
+				trades.push_back(new Trade{
+					order->m_id, sell_order->m_id, order->m_amount, sell_order->m_price
+				});
+				// Decrement current order amount and continue
+				sell_order->m_amount -= order->m_amount;
+				if (sell_order->m_amount == 0)
+				{
+					RemoveSellOrder(i);
+				}
+				return trades;
+			}
+
+			// Fill a partial order and continue
+			if (sell_order->m_amount < order->m_amount)
+			{
+				trades.push_back(new Trade{
+					order->m_id, sell_order->m_id, sell_order->m_amount, sell_order->m_price
+				});
+				// Decrement the input order for a partial
+				order->m_amount -= sell_order->m_amount;
+				RemoveSellOrder(i);
+				continue;
+			}
+		}
+	}
+	// finally add any remaining orders to the order book
+	AddBuyOrder(order);
+	return trades;
 }
 
 std::vector<Trade*> OrderBook::ProcessLimitSell(Order* order)
