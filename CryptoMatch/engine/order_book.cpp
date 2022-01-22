@@ -1,6 +1,12 @@
 
 #include "order_book.hpp"
 
+OrderBook::OrderBook(std::vector<Order*>& buy_orders, std::vector<Order*>& sell_orders)
+{
+	m_buy_orders = buy_orders;
+	m_sell_orders = sell_orders;
+}
+
 /*
 	Add input order to m_buy_orders while keeping ascending order consistent.
 */
@@ -11,7 +17,7 @@ void OrderBook::AddBuyOrder(Order* order)
 	bool added{ false };
 	for (auto it = m_buy_orders.begin(); it != m_buy_orders.end(); ++it)
 	{
-		if (it->m_price >= order->m_price)
+		if ((*it)->m_price >= order->m_price)
 		{
 			m_buy_orders.insert(it, order);
 			added = true;
@@ -35,7 +41,7 @@ void OrderBook::AddSellOrder(Order* order)
 	bool added{ false };
 	for (auto it = m_sell_orders.begin(); it != m_sell_orders.end(); ++it)
 	{
-		if (it->m_price < order->m_price)
+		if ((*it)->m_price < order->m_price)
 		{
 			m_sell_orders.insert(it, order);
 			added = true;

@@ -13,6 +13,7 @@ class OrderBook
 
 public:
 	OrderBook() = default;
+	OrderBook(std::vector<Order*>& buy_orders, std::vector<Order*>& sell_orders);
 	virtual ~OrderBook() = default;
 
 	/* Add a buy order to the current order book */
