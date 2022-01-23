@@ -10,43 +10,25 @@ int main()
 {
     std::cout << "CryptoMatch Engine Online!\n";
 
-    rd_kafka_topic_t* rkt;
-    char* topic = NULL;
-    rd_kafka_conf_t* conf;
-    rd_kafka_topic_conf_t* topic_conf;
-    char errstr[512];
-    char tmp[16];
-
-    /* Create default Kafka Configuration */
-    conf = rd_kafka_conf_new();
-
-    /* Quick termination setup */
-    snprintf(tmp, sizeof(tmp), "%i", SIGINT);
-    rd_kafka_conf_set(conf, "internal.termination.signal", tmp, NULL, 0);
-
-    /* Topic configuration */
-    topic_conf = rd_kafka_topic_conf_new();
-
-    // TODO: Create a consumer and listen for new orders - Kafka
-
-    rd_kafka_conf_set(conf, "enable.partition.eof", "true", NULL, 0);
-
-    /* Create kafka consumer handle*/
-    rd_kafka_t* consumer_handle = rd_kafka_new(RD_KAFKA_CONSUMER, conf, errstr, sizeof(errstr));
-    if (consumer_handle == nullptr)
-    {
-        fprintf(stderr, "%% Failed to create a new consumer: %s\n", errstr);
-        exit(1);
-    }
-
-    /* Create topic */
-    rkt = rd_kafka_topic_new(consumer_handle, topic, topic_conf);
-    topic_conf = NULL; // Transfer ownership to topic.
-
-    // TODO: Create a producer for trade messages
-
     // Create the order book
     OrderBook* order_book = new OrderBook;
 
-    // TODO: Start processing orders until done or canceled
+    // Add Buy Order 1
+    Order* buy_one = new Order;
+    buy_one->m_amount = 100;
+    buy_one->m_id = std::string("ETH");
+    buy_one->m_price = 25.50;
+    buy_one->side = 1;
+
+    Order* buy_two = new Order;
+    buy_one->m_amount = 50;
+    buy_one->m_id = std::string("BTC");
+    buy_one->m_price = 10.00;
+    buy_one->side = 1;
+
+    order_book->AddBuyOrder(buy_one);
+    order_book->AddBuyOrder(buy_two);
+
+    // Print what the current holdings for the user are.
+    order_book->PrintPortfolio();
 }

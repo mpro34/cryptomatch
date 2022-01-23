@@ -172,3 +172,18 @@ std::vector<Trade*> OrderBook::ProcessOrder(Order* order)
 		return ProcessLimitSell(order);
 	}
 }
+
+void OrderBook::PrintPortfolio()
+{
+	printf("Buy Orders:\n");
+	for (auto buy_order : m_buy_orders)
+	{
+		printf("Coin: %s | Amount @ Price = %lld @ %lld\n", buy_order->m_id.c_str(), buy_order->m_amount, buy_order->m_price);
+	}
+
+	printf("Sell Orders:\n");
+	for (auto sell_order : m_sell_orders)
+	{
+		printf("Coin: %s | Amount @ Price = %lld @ %lld\n", sell_order->m_id.c_str(), sell_order->m_amount, sell_order->m_price);
+	}
+}

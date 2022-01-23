@@ -39,4 +39,7 @@ public:
 	/* Process an order and return the trades generated before adding
 		the remaining amount to the market */
 	std::vector<Trade*> ProcessOrder(Order* order);
+
+	/* Print the current holdings for the user */
+	void PrintPortfolio();
 };
